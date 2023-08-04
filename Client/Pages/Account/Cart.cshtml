@@ -1,0 +1,100 @@
+@page
+@model Client.Pages.Account.Carting
+
+<div id="cart">
+    <div id="cart-title">
+        <h3>SHOPPING CART</h3>
+    </div>
+    <div id="cart-content">
+        @{
+            foreach (var item in Model.Cart.items)
+            {
+                <div class="cart-item">
+                    <div class="cart-item-infor">
+                        <div class="cart-item-img">
+                            <img src="~/img/1.jpg" />
+                        </div>
+                        <div class="cart-item-name">
+                            <a href="detail.html?id=1">@item.Product.ProductName</a>
+                        </div>
+                        <div class="cart-item-price">
+                            @item.Product.UnitPrice $
+                        </div>
+                        <div class="cart-item-button">
+                            <form method="post">
+                                <input type="hidden" name="productId" value="@item.Product.ProductId" /><br />
+                                <input type="submit" value="Remove" asp-page-handler="Remove" /><br />
+                            </form>
+                        </div>
+                    </div>
+                    <div class="cart-item-function">
+                        <form method="post">
+                            <input type="hidden" name="productId" value="@item.Product.ProductId" /><br />
+                            <input type="hidden" name="total" value="-1" /><br />
+                            <input type="submit" value="-" asp-page-handler="Increase" /><br />
+                        </form>
+                        <form method="post">
+                            <input type="hidden" name="productId" value="@item.Product.ProductId" /><br />
+                            <input type="hidden" name="total" value="1" /><br />
+                            <input type="submit" value="+" asp-page-handler="Increase" /><br />
+                        </form>
+                        <input type="text" value="@item.count" disabled />
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div id="cart-summary">
+        <div id="cart-summary-content">Total amount: <span style="color:red"> @Model.Cart.Total $</span></div>
+    </div>
+    <form method="post">
+        <div id="customer-info">
+            <div id="customer-info-content">
+                <h3>CUSTOMER INFORMATION: <span style="color:red"> @ViewData["msg1"]</span></h3>
+                <div id="customer-info-detail">
+                    <div id="customer-info-left">
+                        <input asp-for="Customer.CustomerId" value="@(Model.Customer?.CustomerId ?? "")" type="hidden" />
+                        <input asp-for="Customer.CompanyName" value="@Model.Customer?.CompanyName" type="text" placeholder="Company name *" required/><br />
+                        <input asp-for="Customer.ContactName" value="@Model.Customer?.ContactName" type="text" placeholder="Contact name *" required /><br />
+                        <input name="email" placeholder="Email" value="@Model.ViewData["email"]" type="text" required/><br />
+
+                        @*<input type="text" placeholder="Company name *" /><br />
+                        <input type="text" placeholder="Contact name *" /><br />*@
+                    </div>
+                    <div id="customer-info-right">
+                        <input type="text" asp-for="Customer.ContactTitle" value="@Model.Customer?.ContactTitle" placeholder="Contact title *" required /><br />
+                        <input type="text" asp-for="Customer.Address" value="@Model.Customer?.Address" placeholder="Address *" required/><br />
+                        @*<input type="text" placeholder="Contact title *" /><br />
+                        <input type="text" placeholder="Address *" /><br />*@
+                        <input name="OrderDate" type="date" id="yourDatePicker" /><br />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="customer-info">
+            <div id="customer-info-content">
+                <h3>PAYMENT METHODS:</h3>
+                <div id="customer-info-payment">
+                    <div>
+                        <input type="radio" name="rbPaymentMethod" checked />
+                        Payment C.O.D - Payment on delivery
+                    </div>
+                    <div>
+                        <input type="radio" name="rbPaymentMethod" disabled />
+                        Payment via online payment gateway
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cart-order">
+            @if(@Model.Cart.Total != 0) {
+                <input type="submit" value="ORDER" asp-page-handler="Order" /><br />
+            }
+        </div>
+    </form>
+
+    <script>
+        document.getElementById("yourDatePicker").valueAsDate = new Date();
+    </script>
+</div>

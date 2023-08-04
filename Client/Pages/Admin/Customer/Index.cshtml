@@ -1,0 +1,96 @@
+﻿@page
+@model Client.Pages.Admin.Customer.IndexModel;
+<div id="content-left">
+    <ul>
+        <a href="~/Admin/Dashboard/Index">
+        <li>Dashboard</li></a>
+        <a href="~/Admin/Order/Index">
+        <li>Orders</li></a>
+        <a href="~/Admin/Product/Index">
+        <li>Products</li></a>
+        <a href="~/Admin/Customer/Index">
+        <li>Customers</li></a>
+        <a href="~/Admin/Employee/Index">
+        <li>Employees</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path-admin">CUSTOMER LIST</b></div>
+    <div class="content-main">
+        <div id="content-main-dashboard">
+            <div id="product-title-header">
+                <div id="product-title-1" style="width: 25%;">               
+                </div>
+                <div id="product-title-2" style="width: 55%; margin-bottom: 30px">
+                    <form method="get">
+                        <input type="text" name="ContactName" placeholder="Enter ContactName to search" />
+                        <input type="submit" value="Search" />
+                    </form>
+                </div>
+                <div id="product-title-3" style="width: 20%;">
+                   @* <a href="~/Admin/Customer/Create">Create a new Customer</a>
+                    <form method="post" enctype="multipart/form-data">
+                        <label for="upload-file">Import .xls or .xlsx file</label>
+                        <input type="file" name="file" id="upload-file" />
+                        <input type="submit" value="Add" id="upload-file-button" />
+                    </form>*@
+                </div>
+            </div>
+            <div id="order-table-admin">
+                <table id="orders">
+                    <tr>
+                        <th>CustomerID</th>
+                        <th>CompanyName</th>
+                        <th>ContactName</th>
+                        <th>ContactTitle</th>
+                        <th>Address</th>
+                        <th>CreateDate</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    @{
+                        foreach (var customer in Model.ListCustomer.Content)
+                        {
+                            <tr>
+                                <td>@customer.CustomerId</td>
+                                <td>@customer.CompanyName</td>
+                                <td>@customer.ContactName</td>
+                                <td>@customer.ContactTitle</td>
+                                <td>@customer.Address</td>
+                                <td>@customer.CreatedAt</td>
+                                @if (@customer.IsActive == true)
+                                {
+                                    <td style="color: green">Active</td>
+                                }else{
+                                    <td style="color: red">Deactive</td>
+                                }
+                                @if (@customer.IsActive == true)
+                                {
+                                    <td>
+                                        <a asp-page="/Admin/Customer/Status" asp-route-id="@customer.CustomerId">Set Deactive</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a asp-page="/Admin/Customer/Status" asp-route-id="@customer.CustomerId">Set Active</a>
+                                    </td>
+                                }                             
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="pagination_section" style="align-items: center; display: flex; justify-content: center">
+                @for (int i = 1; i <= Model.ListCustomer.Pages; i++)
+                {
+                    <a style="background: @(i == Model.ListCustomer.Page ? "green; color: white" : "#f0f0f0"); padding: 4px 8px;"
+                   href="?ContactName=@(Model.CustomerContactName)&currentPage=@(i)&size=@(Model.ListCustomer.Size)&asc=@(Model.ListCustomer.Ascending)&orderBy=@(Model.ListCustomer.OrderBy)">
+                        @i
+                    </a>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

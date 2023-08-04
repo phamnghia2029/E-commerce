@@ -1,0 +1,54 @@
+﻿@page
+@model SigninModel
+@{
+}
+<div id="form">
+    <div id="form-title">
+        <span><a href="~/account/signup">SIGN UP</a></span>
+        <span><a href="~/account/signin" style="color: red;">SIGN IN</a></span>
+    </div>
+    <div id="form-content">
+        <form method="post" id="loginform">
+            <label>Email<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Account.Email" value="@ViewData["Email"]"/><br />
+            <span class="msg-error" style="color: red;">@ViewData["ErrorEmail"]</span><br />
+
+            <label>Password<span style="color: red;">*</span></label><br />
+            <input type="password" asp-for="Account.Password" value="@ViewData["Password"]"/><br />
+            <span class="msg-error" style="color: red;">@ViewData["ErrorPassword"]</span><br />
+
+            <div><a href="~/account/forgotPassword">Forgot password?</a></div>
+            <input type="submit" value="SIGN IN" /><br />
+        </form>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+@*    <script>
+        $("#loginform").submit(function (e) {
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function (data) {
+                    if (data.role === 2) {
+                        window.location.href = "/admin/product/Index";
+                        return;
+                    }
+                    window.location.href = "/Index";
+
+                },
+                error: function (error) {
+                    document.getElementById("error").innerText = error["responseJSON"];
+                }
+            });
+
+        });
+    </script>*@
+</div>

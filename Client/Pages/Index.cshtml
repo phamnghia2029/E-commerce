@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+<div id="content-left">
+    <h3>CATEGORY</h3>
+    <ul>
+        @{
+            foreach (var category in Model.Categories)
+            {
+                <li onclick="window.location.href ='/product/category?id=@category.CategoryId'">@category.CategoryName</li>
+            }
+        }
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path"><b>Best Sale</b></div>
+    <div class="content-main">
+        @{
+            foreach (var product in Model?.BestSellerProducts)
+            {
+                    <div class="product">
+                        <a href="/product/detail/@product.ProductId"><img src="https://product.hstatic.net/1000230642/product/dsm075033trg__5__93a59bf7c33f434f96ce6d069ba78933.jpg" width="100%"/></a>
+                        <div class="name"><a href="/product/detail">@product.ProductName</a></div>
+                        <div class="price">@product.UnitPrice</div>
+                       <form method="post" asp-page-handler="Buy">
+                            <input type="hidden" name="productId" value="@product.ProductId" /><br />
+                            <input type="hidden" name="total" value="1" /><br />
+                            <input type="button" onclick="this.form.submit()" value="Buy now" asp-page-handler="Buy" /><br />
+                        </form>
+                    </div>
+            }
+        }
+    </div>
+    <div class="path"><b>New Product</b></div>
+    <div class="content-main">
+        @{
+            foreach (var product in Model?.NewProducts)
+            {
+                    <div class="product">
+                        <a href="/product/detail/@product.ProductId"><img src="https://product.hstatic.net/1000230642/product/dsm075033trg__5__93a59bf7c33f434f96ce6d069ba78933.jpg" width="100%" /></a>
+                        <div class="name"><a href="/product/detail">@product.ProductName</a></div>
+                        <div class="price">@product.UnitPrice</div>
+                       <form method="post" asp-page-handler="Buy">
+                            <input type="hidden" name="productId" value="@product.ProductId" /><br />
+                            <input type="hidden" name="total" value="1" /><br />
+                            <input type="button" onclick="this.form.submit()" value="Buy now" asp-page-handler="Buy" /><br />
+                        </form>
+                    </div>
+            }
+        }
+       
+    </div>
+</div>
+           

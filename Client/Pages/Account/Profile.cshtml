@@ -1,0 +1,50 @@
+@page
+@using API.Models.Responses
+@model Pages.Account.Profile
+@{
+}
+<div id="content-left">
+    @{
+        AccountResponse user = Model.Account;
+    }
+    <h3 style="font-weight: normal;">
+        Welcome, @user.Customer.ContactName
+    </h3>
+    <h3>Account Management</h3>
+    <ul>
+        <a href="~/account/profile">
+            <li>Personal information</li></a>
+    </ul>
+    <h3>My order</h3>
+    <ul>
+        <a href="~/account/orders">
+            <li>All orders</li></a>
+        <a href="~/account/canceledOrders">
+            <li>Canceled orders</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path"><b>Personal information</b></div>
+    <div class="content-main">
+        <div id="profile-content">
+            @{
+                <div class="profile-content-col">
+                    <div>Company name: <br /> @user.Customer.CompanyName</div>
+                    <div>Contact name: <br />@user.Customer.ContactName</div>
+                    <div>
+                        <a href="~/account/UpdateProfile">Update profile</a>
+                        <a href="~/account/UpdatePassword">Update password</a>
+                    </div>
+                </div>
+                <div class="profile-content-col">
+                    <div>Contact title: <br />@user.Customer.ContactTitle</div>
+                    <div>Address: <br />@user.Customer.Address</div>
+                </div>
+                <div class="profile-content-col">
+                    <div>Email: <br />@user.Email</div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

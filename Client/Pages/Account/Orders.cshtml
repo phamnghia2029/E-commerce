@@ -1,0 +1,87 @@
+@page
+@model Client.Pages.Account.OrdersModel
+
+<div id="content-left">
+    <h3 style="font-weight: normal;">Welcome, @Model.Account.Customer.ContactName</h3>
+    <h3>Account Management</h3>
+    <ul>
+        <a href="profile.html"></a>
+        <a href="~/account/profile">
+            <li>Personal information</li>
+        </a>
+    </ul>
+    <h3>My order</h3>
+    <ul>
+        <a href="~/account/orders">
+            <li>All orders</li>
+        </a>
+        <a href="~/account/canceledOrders">
+            <li>Canceled orders</li>
+        </a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path">
+        <b>LIST ORDERS</b>
+    </div>
+    <div class="content-main">
+        <div id="profile-content-order">
+            <div>
+
+
+                @{
+                    foreach (var order in Model.Orders)
+                    {
+                        <div class="profile-order-title">
+                            <div class="profile-order-title-left">
+                                <div>Order creation date: @order.OrderDate</div>
+                                <div>Order: <a href="#"># @order.OrderId</a></div>
+                            </div>
+                            <div class="profile-order-title-right">
+                                @if (order.RequiredDate == null)
+                                {
+                                    <span>CANCLED</span>
+                                }
+                                else
+                                {
+                                    <span>@(order.ShippedDate == null ? "PENDING" : "DONE")</span>
+
+                                    if (order.ShippedDate == null)
+                                    {
+                                        <form asp-page-handler="Cancel" method="post" style="display: inline">
+                                            <input type="hidden" name="OrderId" value="@order.OrderId"/>
+                                            <input type="submit" value="Cancel"/>
+                                        </form>
+                                        <form asp-page-handler="Confirm" method="post" style="display: inline">
+                                            <input type="hidden" name="OrderId" value="@order.OrderId"/>
+                                            <input type="submit" value="Confirm"/>
+                                        </form>
+                                    }
+                                }
+                                <form asp-page-handler="ExportPDF" method="post" style="display: inline">
+                                    <input type="hidden" name="OrderId" value="@order.OrderId"/>
+                                    <input type="submit" value="Export PDF"/>
+                                </form>
+                            </div>
+                        </div>
+                        foreach (var orderDetail in order.OrderDetails)
+                        {
+                            <div class="profile-order-content">
+                                <div class="profile-order-content-col1">
+                                    <a href="detail.html">
+                                        <img src="https://product.hstatic.net/1000230642/product/dsm075033trg__5__93a59bf7c33f434f96ce6d069ba78933.jpg" width="100%"/>
+                                    </a>
+                                </div>
+                                <div class="profile-order-content-col2">@orderDetail.Product.ProductName</div>
+                                <div class="profile-order-content-col3">Quantity: @orderDetail.Quantity</div>
+                                <div class="profile-order-content-col4">@orderDetail.UnitPrice $</div>
+                            </div>
+                        }
+                    }
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>

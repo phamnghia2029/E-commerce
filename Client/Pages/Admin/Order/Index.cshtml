@@ -1,0 +1,102 @@
+﻿@page
+@model Client.Pages.Admin.Order.IndexModel
+@{
+}
+<div id="content-left">
+    <ul>
+        <a href="~/Admin/Dashboard/Index">
+        <li>Dashboard</li></a>
+        <a href="~/Admin/Order/Index">
+        <li>Orders</li></a>
+        <a href="~/Admin/Product/Index">
+        <li>Products</li></a>
+        <a href="~/Admin/Customer/Index">
+        <li>Customers</li></a>
+        <a href="~/Admin/Employee/Index">
+        <li>Employees</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path-admin">ORDERS LIST</b></div>
+    <div class="content-main">
+        <div id="content-main-dashboard">
+            <div id="order-title" style="width: 50%;">
+                <b>Filter by Order date:</b>
+                <form method="get">
+                    From: <input type="date" name="startDate" />
+                    To: <input type="date" name="endDate" />
+                    <input type="submit" value="Filter">
+                </form>
+                @if (TempData["errorDate"] != null)
+                {
+                    <p style="color:red">@TempData["errorDate"]</p>
+                }
+            </div>
+            <div id="order-title" style="width: 50%;">
+                <b>Export by Order date:</b>
+                <form method="post">
+                    From: <input type="date" name="startDate" />
+                    To: <input type="date" name="endDate" />
+                    <input type="submit" value="Export">
+                </form>
+                @if (TempData["errorDateExport"] != null)
+                {
+                    <p style="color:red">@TempData["errorDateExport"]</p>
+                }
+            </div>
+            <div id="order-table">
+                <table id="orders">
+                    <tr>
+                        <th>OrderID</th>
+                        <th>OrderDate</th>
+                        <th>RequiredDate</th>
+                        <th>ShippedDate</th>
+                        <th>Employee</th>
+                        <th>Customer</th>
+                        <th>Freight($)</th>
+                        <th>Status</th>
+                    </tr>
+                    @{
+                        foreach (var order in Model.ListOrders.Content)
+                        {
+                            <tr>
+                                <td><a asp-page="/admin/order/detail" asp-route-id="@order.OrderId" >@order.OrderId</a></td>
+                                <td>@order.OrderDate</td>
+                                <td>@order.RequiredDate</td>
+                                <td>@order.ShippedDate</td>
+                                <td>@(order?.Employee?.FirstName ?? "")</td>
+                                <td>@(order?.Customer?.ContactName ?? "")</td>
+                                <td>@order.Freight</td>
+                                @if (order.RequiredDate != null)
+                                {
+                                    @if (order.ShippedDate != null)
+                                    {
+                                        <td style="color: green;">Completed</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color: blue;">Pending | <a asp-page="/Admin/Order/Cancel" asp-route-id="@order.OrderId">Cancel</a></td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td style="color: red;">Canceled</td>
+                                }
+                            </tr>
+                        }
+                    }
+
+                </table>
+            </div>
+            <div class="pagination_section" style="align-items: center; display: flex; justify-content: center">
+                @for (int i = 1; i <= Model.ListOrders.Pages; i++)
+                {
+                    <a style="background: @(i == Model.ListOrders.Page ? "green; color: white" : "#f0f0f0"); padding: 4px 8px;"
+                   href="?startDate=@(Model.StartDate)&endDate=@(Model.EndDate)&currentPage=@(i)&size=@(Model.ListOrders.Size)&asc=@(Model.ListOrders.Ascending)&orderBy=@(Model.ListOrders.OrderBy)">
+                        @i
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

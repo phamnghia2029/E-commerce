@@ -1,0 +1,89 @@
+﻿@page
+@model Client.Pages.Admin.Employee.IndexModel
+@{
+}
+<div id="content-left">
+    <ul>
+        <a href="~/Admin/Dashboard/Index">
+        <li>Dashboard</li></a>
+        <a href="~/Admin/Order/Index">
+        <li>Orders</li></a>
+        <a href="~/Admin/Product/Index">
+        <li>Products</li></a>
+        <a href="~/Admin/Customer/Index">
+        <li>Customers</li></a>
+        <a href="~/Admin/Employee/Index">
+        <li>Employees</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path-admin">EMPLOYEE LIST</b></div>
+    <div class="content-main">
+        <div id="content-main-dashboard">
+            <div id="product-title-header">
+                <div id="product-title-1" style="width: 25%;">
+                </div>
+                <div id="product-title-2" style="width: 55%; margin-bottom: 30px">
+                    <form method="get">
+                        <input type="text" name="Name" placeholder="Enter Name to search" />
+                        <input type="submit" value="Search" />
+                    </form>
+                    <p style="color:red">@TempData["Error"]</p>
+                </div>
+                <div id="product-title-3" style="width: 20%;">
+                    <a href="~/Admin/Employee/Create">Create a new Employee</a>
+                    <form method="post" enctype="multipart/form-data">
+                        <label for="upload-file">Import .xls or .xlsx file</label>
+                        <input type="submit" value="Add" id="upload-file-button" />
+                        <input type="file" name="file" id="upload-file" />                      
+                    </form>
+                </div>
+            </div>
+            <div id="order-table-admin">
+                <table id="orders">
+                    <tr>
+                        <th>EmployeeId</th>
+                        <th>LastName</th>
+                        <th>FirstName</th>
+                        <th>Department</th>
+                        <th>Title</th>
+                        <th>TitleOfCourtesy</th>
+                        <th>BirthDate</th>
+                        <th>HireDate</th>
+                        <th>Address</th>
+                        <th></th>
+                    </tr>
+                    @{
+                        foreach (var employee in Model.ListEmployee.Content)
+                        {
+                            <tr>
+                                <td>@employee.EmployeeId</td>
+                                <td>@employee.LastName</td>
+                                <td>@employee.FirstName</td>
+                                <td>@employee.Department?.DepartmentName</td>
+                                <td>@employee.Title</td>
+                                <td>@employee.TitleOfCourtesy</td>
+                                <td>@employee.BirthDate</td>
+                                <td>@employee.HireDate</td>
+                                <td>@employee.Address</td>
+                                <td>
+                                    <a asp-page="/admin/employee/delete" asp-route-id="@employee.EmployeeId">Delete</a>
+                                    <a asp-page="/admin/employee/edit" asp-route-id="@employee.EmployeeId">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="pagination_section" style="align-items: center; display: flex; justify-content: center">
+                @for (int i = 1; i <= Model.ListEmployee.Pages; i++)
+                {
+                    <a style="background: @(i == Model.ListEmployee.Page ? "green; color: white" : "#f0f0f0"); padding: 4px 8px;"
+                   href="?id=@(Model.Name)&productName=@(Model.ListEmployee)&currentPage=@(i)&size=@(Model.ListEmployee.Size)&asc=@(Model.ListEmployee.Ascending)&orderBy=@(Model.ListEmployee.OrderBy)">
+                        @i
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

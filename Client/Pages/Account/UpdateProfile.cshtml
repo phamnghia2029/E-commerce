@@ -1,0 +1,32 @@
+@page
+@model Client.Pages.Account.UpdateProfile
+
+<div id="form">
+    <div id="form-content">
+        <form method="post">
+            <input type="hidden" asp-for="Request.AccountId" value="@ViewData["AccountId"]" /><br />
+            
+            <label>Email<span style="color: red;">*</span></label><br/>
+            <input type="text" asp-for="Request.Email" value="@ViewData["Email"]"/><br/>
+            <span class="msg-error" style="color: red">@ViewData["ErrorEmail"]</span><br/>
+
+            <label>Company name<span style="color: red;">*</span></label><br/>
+            <input asp-for="Request.CompanyName" value="@ViewData["CompanyName"]" type="text"/><br/>
+            <span class="msg-error" style="color: red">@ViewData["ErrorCompanyName"]</span><br/>
+
+            <label>Contact name<span style="color: red;">*</span></label><br/>
+            <input asp-for="Request.ContactName" value=@ViewData["ContactName"] type="text"/><br/>
+            <span class="msg-error" style="color: red">@ViewData["ErrorContactName"]</span><br/>
+
+            <label>Contact title<span style="color: red;">*</span></label><br/>
+            <input type="text" asp-for="Request.ContactTitle" value="@ViewData["ContactTitle"]"/><br/>
+            <span class="msg-error" style="color: red">@ViewData["ErrorContactTitle"]</span><br/>
+
+            <label>Address<span style="color: red;">*</span></label><br/>
+            <input type="text" asp-for="Request.Address" value="@ViewData["Address"]"/><br/>
+            <span class="msg-error" style="color: red">@ViewData["ErrorAddress"]</span><br/>
+
+            <input type="submit" value="UPDATE" style="margin-bottom: 30px;"/>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@using System.Security.Claims
+@using API.Models.Domain
+@using API.Utils
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">
+                <a href="~/index"><img src="~/img/logo.png" /></a>
+            </div>
+            <div id="banner">
+                <ul>
+                    @if (Sessions.GetFromCookie<String>("accessToken", Context.Request) != null)
+                    {
+                        var token = Sessions.GetFromCookie<String>("accessToken", Context.Request);
+
+                        ClaimsPrincipal principal = TokenUtils.GetPrincipalFrom(token);
+
+                        Cart? cart = Sessions.Get<Cart>("cart", Context.Session);
+                            
+                        <li><a href="~/account/cart">Cart: @(cart?.items?.Count ?? 0)</a></li>
+                        <li>Welcome: @principal.FindFirst(ClaimTypes.Email)?.Value</li>
+                        @if (principal.FindFirst(ClaimTypes.Role).Value.Equals("1")){
+                            <li><a href="~/admin/dashboard/index">Admin</a></li>
+                        }
+                        <li><a href="~/account/profile">Profile</a></li>
+                        <li><a href="~/account/SignOut">SignOut</a></li>
+                    }
+                    else
+                    {
+                        Cart? cart = Sessions.Get<Cart>("cart", Context.Session);
+
+                        <li><a href="~/account/cart">Cart: @(cart?.items?.Count ?? 0)</a></li>
+                        <li><a href="~/account/signin">SignIn</a></li>
+                        <li><a href="~/account/signup">SignUp</a></li>
+                    }
+                </ul>
+            </div>            
+        </div>
+        <div>
+            
+        </div>
+        <div id="content">
+            @RenderBody()
+        </div>
+        <div id="footer">footer</div>
+    </div>
+</body>
+</html>

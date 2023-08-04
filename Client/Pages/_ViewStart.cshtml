@@ -1,0 +1,13 @@
+﻿@{
+    
+    var routeUrl = ViewContext.RouteData.Values["Page"].ToString();
+    var page404 = new List<string> { "InvalidPage" , "NotFound"};
+    if (page404.Any(routeUrl.Contains))
+    {
+        Layout = "";
+    }
+    else{
+        Layout = "_Layout";
+    }
+    
+}

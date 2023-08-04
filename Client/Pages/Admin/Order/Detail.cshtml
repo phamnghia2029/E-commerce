@@ -1,0 +1,68 @@
+﻿@page
+@model Client.Pages.Admin.Order.DetailModel
+@{
+}
+<div id="content-left">
+    <ul>
+        <a href="~/Admin/Dashboard/Index">
+        <li>Dashboard</li></a>
+        <a href="~/Admin/Order/Index">
+        <li>Orders</li></a>
+        <a href="~/Admin/Product/Index">
+        <li>Products</li></a>
+        <a href="~/Admin/Customer/Index">
+        <li>Customers</li></a>
+        <a href="~/Admin/Employee/Index">
+        <li>Employees</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path-admin">ORDER DETAIL</b></div>
+    <div class="content-main">
+        <div id="content-main-dashboard">
+            <div>
+                @{
+                    foreach (var order in Model.OrdersList)
+                    {
+                        <div class="profile-order-title">
+                            <div class="profile-order-title-left">
+                                <div>Order creation date: @order.OrderDate</div>
+                                <div>Order: @order.OrderId</div>
+                            </div>
+                            <div class="profile-order-title-right">
+                                @if (order.RequiredDate != null)
+                                {
+                                    @if (order.ShippedDate != null)
+                                    {
+                                        <div style="color: green;">Completed</div>
+                                    }
+                                    else
+                                    {
+                                        <div style="color: blue;">Pending</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="color: red;">Canceled</div>
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            @foreach (var orderdetail in order.OrderDetails)
+                            {
+                                <div class="profile-order-content">
+                                    <div class="profile-order-content-col1">
+                                        <a href="detail.html"><img src="https://product.hstatic.net/1000230642/product/dsm075033trg__5__93a59bf7c33f434f96ce6d069ba78933.jpg" width="100%" /></a>
+                                    </div>
+                                    <div class="profile-order-content-col2">@orderdetail.Product.ProductName</div>
+                                    <div class="profile-order-content-col3">Quantity: @orderdetail.Quantity</div>
+                                    <div class="profile-order-content-col4">@orderdetail.Product.UnitPrice $</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

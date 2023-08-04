@@ -1,0 +1,67 @@
+@page
+@model Client.Pages.Product.CategoryModel
+
+<div id="content-left">
+    <h3>CATEGORY</h3>
+    <ul>
+        @{
+            foreach (var category in Model.Categories ?? new())
+            {
+                <li onclick="window.location.href ='/product/category?id=@category.CategoryId'">@category.CategoryName</li>
+            }
+        }
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path"><b>Best Sale</b></div>
+    <div style="display: flex">
+        <form method="get">
+            <select name="asc" onchange="this.form.submit()" asp-for="@Model.Items.Ascending">
+                <option value="true">Ascending</option>
+                <option value="false">Descending</option>
+            </select>
+            <input type="hidden" name="currentPage" value="@Model.Items.Page" />
+            <input type="hidden" name="size" value="@Model.Items.Size" />
+            <input type="hidden" name="orderBy" value="@Model.Items.OrderBy" />
+            <input type="hidden" name="id" value="@Model.CategoryId" />
+        </form>
+        <form method="get">
+            <select name="orderBy" onchange="this.form.submit()" asp-for="@Model.Items.OrderBy">
+                <option value="ProductName">Name</option>
+                <option value="UnitPrice">Price</option>
+            </select>
+            <input type="hidden" name="currentPage" value="@Model.Items.Page" />
+            <input type="hidden" name="size" value="@Model.Items.Size" />
+            <input type="hidden" name="asc" value="@Model.Items.Ascending" />
+            <input type="hidden" name="id" value="@Model.CategoryId" />
+        </form>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; width: 100%; margin: 15px">
+        @{
+            foreach (var product in Model.Items.Content)
+            {
+                <div class="product" style="width: 100%">
+                    <a href="/product/detail/@product.ProductId"><img src="https://product.hstatic.net/1000230642/product/dsm075033trg__5__93a59bf7c33f434f96ce6d069ba78933.jpg" width="100%" /></a>
+                    <div class="name"><a href="/product/detail/@product.ProductId">@product.ProductName</a></div>
+                    <div class="price">@product.UnitPrice</div>
+                    <form method="post" asp-page-handler="Increase">
+                        <input type="hidden" name="productId" value="@product.ProductId" /><br />
+                        <input type="hidden" name="total" value="1" /><br />
+                        <input type="button" onclick="this.form.submit()" value="Buy now" asp-page-handler="Increase" /><br />
+                    </form>
+                </div>
+            }
+        }
+    </div>
+    <div class="pagination_section" style="align-items: center; display: flex; justify-content: center">
+        @for (int i = 1; i <= Model.Items.Pages; i++)
+        {
+            <a style="background: @(i == Model.Items.Page ? "green; color: white" : "#f0f0f0"); padding: 4px 8px;"
+                href="?id=@(Model.CategoryId)&currentPage=@(i)&size=@(Model.Items.Size)&asc=@(Model.Items.Ascending)&orderBy=@(Model.Items.OrderBy)">
+                @i
+            </a>
+
+        }
+    </div>
+</div>

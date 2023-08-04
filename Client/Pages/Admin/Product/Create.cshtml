@@ -1,0 +1,50 @@
+﻿@page
+@model Client.Pages.Admin.Product.CreateModel
+@{
+}
+<div id="content-left">
+    <ul>
+        <a href="~/Admin/Dashboard/Index">
+        <li>Dashboard</li></a>
+        <a href="~/Admin/Order/Index">
+        <li>Orders</li></a>
+        <a href="~/Admin/Product/Index">
+        <li>Products</li></a>
+        <a href="~/Admin/Customer/Index">
+        <li>Customers</li></a>
+        <a href="~/Admin/Employee/Index">
+        <li>Employees</li></a>
+    </ul>
+</div>
+<div id="content-right">
+    <div class="path-admin">CREATE A NEW PRODUCT</b></div>
+    <div class="content-main">
+        <form id="content-main-product" method="post">
+            <div class="content-main-1">
+                <label>Product name (*):</label><br />
+                <input type="text" asp-for="Request.ProductName" value="@ViewData["ProductName"]"><br />
+                <span class="msg-error">@ViewData["ErrorProductName"]</span><br />
+                <label>Unit price:</label><br />
+                <input type="text" asp-for="Request.UnitPrice" value="@ViewData["UnitPrice"]"><br />
+                <span class="msg-error">@ViewData["ErrorUnitPrice"]</span><br />
+                <label>Quantity per unit:</label><br />
+                <input type="text" asp-for="Request.QuantityPerUnit" value="@ViewData["QuantityPerUnit"]"><br />
+                <label>Units in stock (*):</label><br />
+                <input type="text" asp-for="Request.UnitsInStock" value="@ViewData["UnitsInStock"]"><br />
+                <span class="msg-error">@ViewData["ErrorUnitsInStock"]</span><br />
+            </div>
+            <div class="content-main-1">
+                <label>Category (*):</label><br />
+                <select asp-for="Request.CategoryId" class="form-control" asp-items="@Model.CategoryIds"></select>
+                <br />
+                <label>Reorder level:</label><br />
+                <input type="text" disabled><br />
+                <label>Units on order:</label><br />
+                <input type="text" disabled><br />
+                <label>Discontinued:</label><br />
+                <input type="checkbox" asp-for="Request.Discontinued" value="@ViewData["Discontinued"]" id=""><br />
+                <input type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+</div>
